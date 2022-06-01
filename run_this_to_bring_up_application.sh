@@ -37,6 +37,7 @@ lsmod | grep snd_aloop
 
 ### ENABLE_RECORDING=1
 ### JIBRI_LOGS_DIR=/config/logs/
+### and maybe some more which do not have defaults
 
 ## different startup procedure
 
