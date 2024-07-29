@@ -3,7 +3,8 @@ version: '3.5'
 services:
     # SIP gateway (audio)
     jigasi:
-        image: jitsi/jigasi:${JITSI_IMAGE_VERSION:-unstable}
+        #image: jitsi/jigasi:${JITSI_IMAGE_VERSION:-unstable}
+        build: ./jigasi
         restart: ${RESTART_POLICY:-unless-stopped}
         ports:
             - '${JIGASI_PORT_MIN:-20000}-${JIGASI_PORT_MAX:-20050}:${JIGASI_PORT_MIN:-20000}-${JIGASI_PORT_MAX:-20050}/udp'
@@ -11,6 +12,17 @@ services:
             - ${CONFIG}/jigasi:/config:Z
             - ${CONFIG}/transcripts:/tmp/transcripts:Z
         environment:
+            - AUTOSCALER_SIDECAR_KEY_FILE
+            - AUTOSCALER_SIDECAR_KEY_ID
+            - AUTOSCALER_SIDECAR_GROUP_NAME
+            - AUTOSCALER_SIDECAR_HOST_ID
+            - AUTOSCALER_SIDECAR_INSTANCE_ID
+            - AUTOSCALER_SIDECAR_PORT
+            - AUTOSCALER_SIDECAR_REGION
+            - AUTOSCALER_SIDECAR_SHUTDOWN_POLLING_INTERVAL
+            - AUTOSCALER_SIDECAR_STATS_POLLING_INTERVAL
+            - AUTOSCALER_URL
+            - BOSH_URL_PATTERN
             - ENABLE_AUTH
             - ENABLE_GUESTS
             - XMPP_AUTH_DOMAIN
@@ -21,7 +33,11 @@ services:
             - XMPP_PORT
             - XMPP_DOMAIN
             - PUBLIC_URL
+            - JIGASI_CONFIGURATION
             - JIGASI_DISABLE_SIP
+            - JIGASI_JVB_TIMEOUT
+            - JIGASI_LOCAL_REGION
+            - JIGASI_LOG_FILE
             - JIGASI_SIP_URI
             - JIGASI_SIP_PASSWORD
             - JIGASI_SIP_SERVER
@@ -38,6 +54,7 @@ services:
             - JIGASI_SIP_KEEP_ALIVE_METHOD
             - JIGASI_ENABLE_SDES_SRTP
             - ENABLE_TRANSCRIPTIONS
+            - JIGASI_TRANSCRIBER_BACKEND
             - JIGASI_TRANSCRIBER_ADVERTISE_URL
             - JIGASI_TRANSCRIBER_RECORD_AUDIO
             - JIGASI_TRANSCRIBER_SEND_TXT
@@ -52,6 +69,8 @@ services:
             - SENTRY_ENVIRONMENT
             - SENTRY_RELEASE
             - TZ
+            - USE_TRANSLATOR_IN_CONFERENCE
+            - VOSK_SERVER
         depends_on:
             - prosody
         networks:
